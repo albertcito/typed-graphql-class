@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "dist",
   "scripts": {
-    "build": "tsc",
-    "test": "jest --config jestconfig.json",
+    "build": "tsc -p .",
+    "test": "jest src --config jestconfig.json",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json"
   },
@@ -29,7 +29,7 @@
     "typescript": "^3.6.2"
   },
   "files": [
-    "lib/**/*"
+    "dist/**/*"
   ],
   "dependencies": {
     "typed-graphqlify": "^2.2.3"
