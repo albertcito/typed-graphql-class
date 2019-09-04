@@ -147,7 +147,7 @@ query translation($idLang: String, $idTranslation: Int) {
 }
 ```
 
-##How to use it with Ajax library
+## How to use it with Ajax library
 
 Using the Query of queries example.
 ```typescript
