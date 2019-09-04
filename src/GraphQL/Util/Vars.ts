@@ -5,9 +5,9 @@ import {
 } from '../interfaces';
 
 export class Vars {
-  private readonly types: { [key: string]: string};
-  constructor(types: { [key: string]: string}) {
-    this.types = types;
+  private readonly varTypes: { [key: string]: string};
+  constructor(varTypes: { [key: string]: string}) {
+    this.varTypes = varTypes;
   }
 
   /**
@@ -23,7 +23,7 @@ export class Vars {
     }
     const vars: IVars = {};
     for (const varName of varsArray) {
-      const type = this.types[varName];
+      const type = this.varTypes[varName];
       if (typeof type === 'undefined') {
         throw this.Error(varName);
       }
@@ -39,7 +39,7 @@ export class Vars {
   public varsValues = (variables: string[]): IVars => {
     const vars: IVars = {};
     for (const varName of variables) {
-      const type = this.types[varName];
+      const type = this.varTypes[varName];
       if (typeof type === 'undefined') {
         throw this.Error(varName);
       }
@@ -78,7 +78,7 @@ export class Vars {
   }
 
   private Error(varName: string) {
-    const typesList = Object.keys(this.types).join(', ');
+    const typesList = Object.keys(this.varTypes).join(', ');
     return new Error(`The "${varName}" doesn't exist in the types list: ${typesList}`);
   }
 

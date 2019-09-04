@@ -18,29 +18,21 @@ class GraphQL {
   private readonly utilCols: Cols;
   private readonly utilVars: Vars;
 
-  constructor(columnsType: IColumnType[], types: { [key: string]: string } = {}) {
+  constructor(columnsType: IColumnType[], varTypes: { [key: string]: string } = {}) {
     this.utilCols = new Cols(columnsType);
-    this.utilVars = new Vars(types);
+    this.utilVars = new Vars(varTypes);
   }
 
   /**
-   * To return a query with keys:
-   *
-   * operation($idLang: String) {
-   *  operation(idLang: $idLang) {
-   *    text,
-   *    idText,
-   *    idLang,
-   *  }
-   * }
-   *
-   * or
+   * To return a query like this one:
    *
    * operation($idLang: String) {
    *  operation {
-   *    text,
-   *    idText,
-   *    idLang,
+   *    idTranslation
+   *    text(idLang: $idLang) {
+   *      idText
+   *      idLang
+   *    }
    *  }
    * }
    *
@@ -53,7 +45,6 @@ class GraphQL {
     const operationType = (variables && variables.length > 0) ?
       this.operationVars(operation, variables, columns) :
       this.operationCols(operation, columns);
-    // I should to read every column, and add the values  of every var used i nthe query
     const keys = this.utilVars.varsKeys(columns, variables);
     return (keys && Object.keys(keys).length > 0) ? params(
       this.utilVars.varsKeys(columns, variables),
@@ -105,8 +96,7 @@ class GraphQL {
    *  }
    *
    * @param operation required. The operation name
-   * @param columns optional. To print the columns.
-   * If this param doesn't exist it will print the columns by default
+   * @param columns required. To print the columns.
    */
   private operationCols = (
     operation: string,
@@ -123,8 +113,7 @@ class GraphQL {
    *  }
    *
    * @param variables required. To print the variables
-   * @param columns optional. To print the columns.
-   * If this param doesn't exist it will print the columns by default
+   * @param columns required. To print the columns.
    */
 
   private vars = (variables: string[], columns: Array<ICols | string>) =>  params(
@@ -145,8 +134,7 @@ class GraphQL {
    *  }
    * }
    *
-   * @param columns optional. To print the columns.
-   * If this param doesn't exist it will print the columns by default
+   * @param columns required. To print the columns.
    */
   private cols = (columns: Array<ICols | string>): IColsTypes => this.utilCols.cols(columns);
 
