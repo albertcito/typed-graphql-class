@@ -1,0 +1,37 @@
+{
+  "name": "typed-graphql-class",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --config jestconfig.json",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/albertcito/typed-graphql-class.git"
+  },
+  "keywords": [],
+  "author": "Albertcito",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/albertcito/typed-graphql-class/issues"
+  },
+  "homepage": "https://github.com/albertcito/typed-graphql-class#readme",
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.19.0",
+    "typescript": "^3.6.2"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "dependencies": {
+    "typed-graphqlify": "^2.2.3"
+  }
+}
