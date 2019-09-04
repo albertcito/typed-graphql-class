@@ -31,9 +31,7 @@ export class Cols {
     for (const col of columnsSelected) {
       if (typeof col === 'string') {
         const currentCol = this.getCol(col);
-        cols[currentCol.name] = (typeof currentCol.resolve === 'function') ?
-          currentCol.resolve() :
-          currentCol.resolve;
+        cols[currentCol.name] = currentCol.resolve;
       } else {
         for (const colName in col) {
           if (!col.hasOwnProperty(colName)) { continue; }
@@ -41,7 +39,7 @@ export class Cols {
           if (typeof currentCol.resolve === 'function') {
             cols[colName] = currentCol.resolve(col[colName]);
           } else {
-            throw new Error(`The ${colName} doesn't have a resolve function. It's a simple column`);
+            throw new Error(`The ${colName} doesn't have a resolve function`);
           }
         }
       }

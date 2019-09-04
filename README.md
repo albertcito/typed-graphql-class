@@ -2,11 +2,15 @@
 
 This package depends of the [typed-graphqlify](https://github.com/acro5piano/typed-graphqlify). The goal is to simplify the Query/Mutation use in the code.
 
+To install: `npm i typed-graphql-class`
+
 ## Simple query example:
 
 File `TextType.tsx` in `graphql/types`;
 ```typescript
-const textType: ColumnTypeInterface[] = [
+import { types } from 'typed-graphql-class';
+import { IColumnType } from 'typed-graphql-class/dist/interfaces';
+const textType: IColumnType[] = [
   {
     name: 'idLang',
     resolve: types.string
@@ -25,6 +29,7 @@ export default textType;
 
 File: `TextQuery.tsx` in 'graphql/queries'
 ```typescript
+import { Query } from 'typed-graphql-class';
 import { textType } from 'graphql/types';
 class TextQuery  {
   private readonly query: Query;
@@ -67,7 +72,9 @@ query text($idLang: String) {
 
 File `TranslationType.tsx` in `graphql/types`;
 ```typescript
-const translationType: ColumnTypeInterface[] = [
+import { types, GraphQL } from 'typed-graphql-class';
+import { IColumnType } from 'typed-graphql-class/dist/interfaces';
+const translationType: IColumnType[] = [
   {
     name: 'idTranslation',
     resolve: types.number
@@ -94,6 +101,7 @@ const translationType: ColumnTypeInterface[] = [
 ```
 File: `TranslationQuery.tsx` in 'graphql/queries'
 ```typescript
+import { Query } from 'typed-graphql-class';
 class Translation {
   private readonly query: Query;
   readonly operation = 'translation';

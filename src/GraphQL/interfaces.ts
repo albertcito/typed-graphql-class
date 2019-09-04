@@ -1,6 +1,6 @@
 import { types } from 'typed-graphqlify';
 
-type IResolve = (args: IColVar) => string;
+type IResolve = (args: Array<ICols | string> | IColVar) => string;
 
 export interface IColumnType {
   name: string;
