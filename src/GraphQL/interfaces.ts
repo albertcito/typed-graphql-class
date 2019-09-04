@@ -1,8 +1,10 @@
 import { types } from 'typed-graphqlify';
 
+type IResolve = (args: IColVar) => string;
+
 export interface IColumnType {
   name: string;
-  resolve: types | Function;
+  resolve: types | IResolve;
 }
 
 export interface IVars {
