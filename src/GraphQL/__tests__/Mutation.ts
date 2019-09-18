@@ -27,27 +27,31 @@ describe('GraphQL-Type-Mutation', () => {
       },
     ];
 
-    const query = new Mutation([
-      {
-        name: 'idTranslation',
-        resolve: types.number,
-      },
-      {
-        name: 'code',
-        resolve: types.string,
-      },
-      {
-        name: 'text',
-        resolve: (args: IColVar) => {
-          const graphQL = new GraphQL(columnsText, { idLang: types.string });
-          return graphQL.resolve(args);
+    const query = new Mutation(
+      'translation',
+      [
+        {
+          name: 'idTranslation',
+          resolve: types.number,
         },
-      },
-    ], {
-      code: 'String',
-      texts: '[CreateTranslation]',
-    });
-    const queryString = query.toString('translation', {
+        {
+          name: 'code',
+          resolve: types.string,
+        },
+        {
+          name: 'text',
+          resolve: (args: IColVar) => {
+            const graphQL = new GraphQL(columnsText, { idLang: types.string });
+            return graphQL.resolve(args);
+          },
+        },
+      ],
+      {
+        code: 'String',
+        texts: '[CreateTranslation]',
+      }
+    );
+    const queryString = query.toString({
       columns: [
         'idTranslation',
         {
