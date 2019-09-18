@@ -1,6 +1,6 @@
 import { query } from 'typed-graphqlify';
 import GraphQL from './GraphQL';
-import { IColVar, IColumnType } from './interfaces';
+import { IColumnType, IColVar } from './interfaces';
 
 class Query extends GraphQL {
   public readonly operationName: string;

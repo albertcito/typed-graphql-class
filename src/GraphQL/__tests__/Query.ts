@@ -23,7 +23,7 @@ describe('GraphQL-Type-Query', () => {
           name: 'localName',
           resolve: types.string,
         },
-      ]
+      ],
     );
     const columns = [
       'idLang',
@@ -53,7 +53,7 @@ describe('GraphQL-Type-Query', () => {
       ],
       {
         idUser: 'Int',
-      }
+      },
     );
     const columns = [
       'idUser',
@@ -107,7 +107,7 @@ describe('GraphQL-Type-Query', () => {
       {
         idLang: 'String',
         idTranslation: 'Int',
-      }
+      },
     );
     const queryString = query.toString({ columns: [
       'idTranslation',
@@ -127,7 +127,7 @@ describe('GraphQL-Type-Query', () => {
       [{
         name: 'idUser',
         resolve: types.number,
-      }]
+      }],
     );
     expect(() => query.toString({ columns: ['idUser'], variables: ['noVariable'] })).toThrow();
     expect(() => query.toString({ columns: ['NoColumn'] })).toThrow();

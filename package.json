@@ -1,6 +1,6 @@
 {
   "name": "typed-graphql-class",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Query builder for GraphQL Queries/Mutations in TypeScript using classes.",
   "main": "dist/index.js",
   "types": "dist",
@@ -9,6 +9,7 @@
     "test": "jest src --config jestconfig.json",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
+    "lint-fix": "tslint -p tsconfig.json --fix",
     "prepare" : "npm run build",
     "prepublishOnly" : "npm test && npm run lint",
     "preversion" : "npm run lint",

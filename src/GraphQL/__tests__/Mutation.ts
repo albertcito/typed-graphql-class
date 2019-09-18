@@ -49,7 +49,7 @@ describe('GraphQL-Type-Mutation', () => {
       {
         code: 'String',
         texts: '[CreateTranslation]',
-      }
+      },
     );
     const queryString = query.toString({
       columns: [
