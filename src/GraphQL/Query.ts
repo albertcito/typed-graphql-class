@@ -10,12 +10,12 @@ class Query extends GraphQL {
     this.operationName = operationName;
   }
 
-  public toString = (
+  public toString(
     {
       columns,
       variables,
     }: IColVar,
-  ) => {
+  ) {
     const param = this.operation(this.operationName, columns, variables);
     return query(this.operationName, param);
   }

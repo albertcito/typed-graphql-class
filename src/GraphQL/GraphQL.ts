@@ -41,7 +41,7 @@ class GraphQL {
    * @param variables optional. To print the variables.
    * @param columns optional. To print the columns.
    */
-  public operation = (operation: string, columns: Array<ICols | string>, variables?: string[]) => {
+  public operation(operation: string, columns: Array<ICols | string>, variables?: string[]) {
     const operationType = (variables && variables.length > 0) ?
       this.operationVars(operation, variables, columns) :
       this.operationCols(operation, columns);
@@ -58,7 +58,7 @@ class GraphQL {
    *
    * @param args required. It can be a array of columns or a object {columns, variabes}
    */
-  public resolve = (args: string[] | IColVar) => {
+  public resolve(args: string[] | IColVar) {
     if (Array.isArray(args)) {
       return this.cols(args);
     }
@@ -80,11 +80,13 @@ class GraphQL {
    * @param variables required. To print the variables
    * @param columns required. To print the columns.
    */
-  private operationVars = (
+  private operationVars(
     operation: string,
     variables: string[],
     columns: Array<ICols | string>,
-  ) => ({ [operation]: this.vars(variables, columns) })
+  ) {
+    return { [operation]: this.vars(variables, columns) };
+  }
 
   /**
    * To return a sub-query with operation name and without args
@@ -98,10 +100,12 @@ class GraphQL {
    * @param operation required. The operation name
    * @param columns required. To print the columns.
    */
-  private operationCols = (
+  private operationCols(
     operation: string,
     columns: Array<ICols | string>,
-  ) => ({ [operation]: this.cols(columns) })
+  ) {
+    return { [operation]: this.cols(columns) };
+  }
 
   /**
    * To return a sub-query with args
@@ -116,10 +120,12 @@ class GraphQL {
    * @param columns required. To print the columns.
    */
 
-  private vars = (variables: string[], columns: Array<ICols | string>) =>  params(
-    this.utilVars.varsValues(variables),
-    this.cols(columns),
-  )
+  private vars(variables: string[], columns: Array<ICols | string>) {
+    return params(
+      this.utilVars.varsValues(variables),
+      this.cols(columns),
+    )
+  }
 
   /**
    *  To return a sub-query columns
@@ -136,7 +142,9 @@ class GraphQL {
    *
    * @param columns required. To print the columns.
    */
-  private cols = (columns: Array<ICols | string>): IColsTypes => this.utilCols.cols(columns);
+  private cols(columns: Array<ICols | string>): IColsTypes {
+    return this.utilCols.cols(columns);
+  }
 
 }
 
