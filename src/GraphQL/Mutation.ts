@@ -1,17 +1,26 @@
 import { mutation } from 'typed-graphqlify';
 import GraphQL from './GraphQL';
-import { IColVar } from './interfaces';
+import {
+  IColumnType,
+  IColVar,
+} from './interfaces';
 
 class Mutation extends GraphQL {
-  public toString = (
-    operation: string,
+  public readonly operationName: string;
+
+  constructor(operationName: string, columnsType: IColumnType[], varTypes: { [key: string]: string } = {}) {
+    super(columnsType, varTypes);
+    this.operationName = operationName;
+  }
+
+  public toString(
     {
       columns,
       variables,
     }: IColVar,
-  ) => {
-    const param = this.operation(operation, columns, variables);
-    return mutation(operation, param);
+  ) {
+    const param = this.operation(this.operationName, columns, variables);
+    return mutation(this.operationName, param);
   }
 
 }

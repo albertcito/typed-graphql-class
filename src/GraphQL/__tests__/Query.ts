@@ -8,52 +8,59 @@ import { IColVar } from '../interfaces';
 describe('GraphQL-Type-Query', () => {
 
   it('render GraphQL - basic', () => {
-    const query = new Query([
-      {
-        name: 'idLang',
-        resolve: types.string,
-      },
-      {
-        name: 'name',
-        resolve: types.string,
-      },
-      {
-        name: 'localName',
-        resolve: types.string,
-      },
-    ]);
+    const query = new Query(
+      'langs',
+      [
+        {
+          name: 'idLang',
+          resolve: types.string,
+        },
+        {
+          name: 'name',
+          resolve: types.string,
+        },
+        {
+          name: 'localName',
+          resolve: types.string,
+        },
+      ],
+    );
     const columns = [
       'idLang',
       'name',
       'localName',
     ];
-    const queryString = query.toString('langs', { columns });
+    const queryString = query.toString({ columns });
     expect(queryString).toEqual('query langs{langs{idLang name localName}}');
   });
 
   it('render GraphQL - variable', () => {
-    const query = new Query([
+    const query = new Query(
+      'user',
+      [
+        {
+          name: 'idUser',
+          resolve: types.number,
+        },
+        {
+          name: 'name',
+          resolve: types.string,
+        },
+        {
+          name: 'email',
+          resolve: types.string,
+        },
+      ],
       {
-        name: 'idUser',
-        resolve: types.number,
+        idUser: 'Int',
       },
-      {
-        name: 'name',
-        resolve: types.string,
-      },
-      {
-        name: 'email',
-        resolve: types.string,
-      },
-    ], {
-      idUser: 'Int',
-    });
+    );
     const columns = [
       'idUser',
       'name',
       'email',
     ];
-    const queryString = query.toString('user', { columns, variables: ['idUser'] });
+    const queryString = query.toString({columns, variables: ['idUser']});
     expect(queryString).toEqual('query user($idUser:Int){user(idUser:$idUser){idUser name email}}');
   });
 
@@ -78,27 +85,31 @@ describe('GraphQL-Type-Query', () => {
       },
     ];
 
-    const query = new Query([
-      {
-        name: 'idTranslation',
-        resolve: types.number,
-      },
-      {
-        name: 'code',
-        resolve: types.string,
-      },
-      {
-        name: 'text',
-        resolve: (args: IColVar) => {
-          const graphQL = new GraphQL(columnsText, { idLang: types.string });
-          return graphQL.resolve(args);
+    const query = new Query(
+      'translation',
+      [
+        {
+          name: 'idTranslation',
+          resolve: types.number,
         },
+        {
+          name: 'code',
+          resolve: types.string,
+        },
+        {
+          name: 'text',
+          resolve: (args: IColVar) => {
+            const graphQL = new GraphQL(columnsText, { idLang: types.string });
+            return graphQL.resolve(args);
+          },
+        },
+      ],
+      {
+        idLang: 'String',
+        idTranslation: 'Int',
       },
-    ], {
-      idLang: 'String',
-      idTranslation: 'Int',
-    });
-    const queryString = query.toString('translation', { columns: [
+    );
+    const queryString = query.toString({ columns: [
       'idTranslation',
       {
         text: {
@@ -111,13 +122,14 @@ describe('GraphQL-Type-Query', () => {
   });
 
   it('properly errors on invalid input', () => {
-    const query = new Query([
-      {
+    const query = new Query(
+      'user',
+      [{
         name: 'idUser',
         resolve: types.number,
-      },
-    ]);
-    expect(() => query.toString('user', { columns: ['idUser'], variables: ['noVariable'] })).toThrow();
-    expect(() => query.toString('user', { columns: ['NoColumn'] })).toThrow();
+      }],
+    );
+    expect(() => query.toString({ columns: ['idUser'], variables: ['noVariable'] })).toThrow();
+    expect(() => query.toString({ columns: ['NoColumn'] })).toThrow();
   });
 });
