@@ -41,7 +41,7 @@ import { Query } from 'typed-graphql-class';
 import { textType } from 'graphql/types';
 class TextQuery extends Query {
   constructor() {
-    this.query = new Query(
+    super(
       'text',
       textType,
       { idLang: 'String' }
@@ -106,7 +106,7 @@ File: `TranslationQuery.tsx` in 'graphql/queries'
 import { Query } from 'typed-graphql-class';
 class Translation extends Query{
   constructor() {
-    this.query = new Query(
+    super(
       'translation',
       translationType,
       {
