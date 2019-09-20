@@ -124,7 +124,7 @@ class GraphQL {
     return params(
       this.utilVars.varsValues(variables),
       this.cols(columns),
-    )
+    );
   }
 
   /**

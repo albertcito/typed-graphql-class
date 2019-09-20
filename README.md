@@ -4,6 +4,14 @@ This package depends of the [typed-graphqlify](https://github.com/acro5piano/typ
 
 To install: `npm i typed-graphql-class`
 
+## Why
+
+Because a nested queries looks very ugly and more difficult to read if you need add variables in the nested columns. Also if I want to create many instances of the same query requesting others columns I have to define the column type every time.
+
+## Solution
+
+The code provee the define the queries and mutations as classes and I call them only defining the columns and variables.
+
 ## Simple query example:
 
 File `TextType.tsx` in `graphql/types`;
@@ -31,30 +39,24 @@ File: `TextQuery.tsx` in 'graphql/queries'
 ```typescript
 import { Query } from 'typed-graphql-class';
 import { textType } from 'graphql/types';
-class TextQuery  {
-  private readonly query: Query;
+class TextQuery extends Query {
   constructor() {
-    this.query = new Query(textType, {
-      idLang: 'String'
-    });
-  }
-
-  resolve = ({ columns }: ColVarInterface) => {
-    return this.query.toString(
+    this.query = new Query(
       'text',
-      {
-        columns,
-        variables: ['idLang']
-      }
+      textType,
+      { idLang: 'String' }
     );
-  };
+  }
 }
 export default new Text();
 ```
 
 How to use it:
 ```typescript
-const query = textQuery.resolve(['text', 'idLang','idTranslation']);
+const query = textQuery.toString({
+  columns: ['text', 'idLang','idTranslation'],
+  variables: ['idLang']
+});
 console.log(query);
 ```
 Result
@@ -102,30 +104,23 @@ const translationType: IColumnType[] = [
 File: `TranslationQuery.tsx` in 'graphql/queries'
 ```typescript
 import { Query } from 'typed-graphql-class';
-class Translation {
-  private readonly query: Query;
-  readonly operation = 'translation';
+class Translation extends Query{
   constructor() {
-    this.query = new Query(translationType, {
-      idTranslation: server.int,
-      idLang: server.string,
-    });
-  }
-  public resolve = ({ columns, variables }: ColVarInterface) => {
-    return this.query.toString(
-      this.operation,
+    this.query = new Query(
+      'translation',
+      translationType,
       {
-        columns,
-        variables,
+        idTranslation: server.int,
+        idLang: server.string,
       }
     );
-  };
+  }
 }
 export default new Translation();
 ```
 How to use it:
 ```typescript
-const query = translationQuery.resolve({
+const query = translationQuery.toString({
   columns: [
     'idTranslation',
     'code',
@@ -164,7 +159,7 @@ interface ITranslationArgs {
   idTranslation: number;
 }
 const getTranslation = async (variables: ITranslationArgs) => {
-  const query = translationQuery.resolve({
+  const query = translationQuery.toString({
     columns: [
       'idTranslation',
       'code',
