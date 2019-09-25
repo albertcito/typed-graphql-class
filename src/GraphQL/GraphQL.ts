@@ -15,6 +15,17 @@ import {
  */
 class GraphQL {
 
+  /**
+   * To resove a column type
+   *
+   * @param args columns and variables required to resolve
+   * @param columnType defition column tyep
+   */
+  public static resolveType(args: IColVar, columnType: IColumnType[], varTypes: { [key: string]: string } = {}) {
+    const graphQL = new GraphQL(columnType, varTypes);
+    return graphQL.resolve(args);
+  }
+
   private readonly utilCols: Cols;
   private readonly utilVars: Vars;
 
