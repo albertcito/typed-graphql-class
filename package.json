@@ -39,6 +39,6 @@
     "dist/**/*"
   ],
   "dependencies": {
-    "typed-graphqlify": "^2.2.3"
+    "typed-graphqlify": "^2.3.0"
   }
 }
