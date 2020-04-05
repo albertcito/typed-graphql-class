@@ -1,6 +1,25 @@
 import { types } from '../../';
 import { IColumnType } from '../../interfaces';
-const columns: IColumnType[] = [
+
+export interface IText {
+  idText: number;
+  text: string;
+  idLang: string;
+  idTranslation: number;
+}
+
+export type TTextKeys = keyof IText;
+
+export interface ITextArgs {
+  columns: TTextKeys[];
+  variables: ['idLang'];
+}
+
+interface IColumnTypeText extends IColumnType {
+  name: TTextKeys;
+}
+
+export const textType: IColumnTypeText[] = [
   {
     name: 'idText',
     resolve: types.number,
@@ -18,4 +37,3 @@ const columns: IColumnType[] = [
     resolve: types.number,
   },
 ];
-export default columns;

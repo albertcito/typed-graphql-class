@@ -1,16 +1,27 @@
 # Typed GraphQL Class
 
-This package depends of the [typed-graphqlify](https://github.com/acro5piano/typed-graphqlify). The goal is to simplify the Query/Mutation use in the code.
+This package depends of the [typed-graphqlify](https://github.com/acro5piano/typed-graphqlify).  The goal is to simplify write the Query or Mutation, writing the query as an array.
 
 To install: `npm i typed-graphql-class`
 
-## Why
+![Write the queries as array](https://cdn-images-1.medium.com/max/2600/1*L8skUE0F1vkuc_Yn_EDFKw.png)
 
-Because a nested queries looks very ugly and more difficult to read if you need add variables in the nested columns. Also if I want to create many instances of the same query requesting others columns I have to define the column type every time.
+
+## Usage
+- [Solution](#solution)
+- [Simple query example](#simple-query-example)
+- [Query of queries example](#query-of-queriesexample)
+- [How to use it with Ajax library](#how-to-use-it-with-ajax-library)
+- [Autocomplete queries](#autocomplete-queries)
+   - [Simple query Example](#simple-query-example)
+   - [Query of queries example](#query-of-queries-example)
+- [Operation Class](#operation-class)
 
 ## Solution
 
-The code provee the define the queries and mutations as classes and I call them only defining the columns and variables.
+- Create the (types)[https://graphql.org/learn/schema/#type-system] with the interface `IColumnType`.
+- Define the query or mutation class.
+- Call the query or mutation class with the columns and/or variables in an array, and get the query ready to send to the server.
 
 ## Simple query example:
 
@@ -177,3 +188,88 @@ const getTranslation = async (variables: ITranslationArgs) => {
   console.log(response);
 }
 ```
+
+## Autocomplete queries
+
+There are two examples to create the `type` to create the array typed.
+<img width="700" height="350" src="https://cdn-images-1.medium.com/max/1600/1*2p2-lt_yvzzt7b_r_KONKQ.gif">
+
+### Simple query Example
+```typescript
+export interface IText {
+  idText: number;
+  text: string;
+  idLang: string;
+  idTranslation: number;
+}
+
+export type TTextKeys = keyof IText;
+```
+## Query of queries example:
+
+```typescript
+export interface ITranslation {
+  idTranslation: number;
+  code: string;
+  text: IText;
+}
+
+export interface ITextArgs {
+  columns: TTextKeys[],
+  variables: ['idLang'];
+}
+
+type TTranslationSimpleKeys = keyof Omit<ITranslation, 'text'>;
+
+export type TTranslationKeys = (
+  TTranslationSimpleKeys |
+  { text: ITextArgs }
+);
+
+```
+
+## Operation Class
+
+The Operation class return two values that are needed to the ajax call. For instance
+```typescript
+const columns: TTranslationKeys[] = [
+  'idTranslation',
+    {
+      text: {
+        columns: ['idText', 'text'],
+        variables: ['idLang'],
+      },
+    },
+];
+const idTranslation = 5;
+const operation = new Operation(
+  { idTranslation },
+  columns,
+  translationQuery
+);
+const params = operation.params();
+```
+The params variable has the query and the variables values:
+```typescript
+const received = {
+  query: `
+    query translation($idLang: String, $idTranslation: Int) {
+      translation(idTranslation: $idTranslation) {
+        idTranslation
+        code
+        text(idLang: $idLang) {
+          text
+          idLang
+        }
+      }
+    }`,
+  variables: { "idTranslation": 5 },
+};
+```
+
+So you now you can do it, in order to call the endpoint:
+```typescript
+const response = await axios.post(url, operation.params());
+```
+
+😀🙂

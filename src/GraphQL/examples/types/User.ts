@@ -1,6 +1,19 @@
 import { types } from '../../';
 import { IColumnType } from '../../interfaces';
-const columns: IColumnType[] = [
+
+export interface IUser {
+  idUser: number;
+  name: string;
+  email: string;
+}
+
+export type TUserKeys = keyof IUser;
+
+interface IColumnTypeUser extends IColumnType {
+  name: TUserKeys;
+}
+
+export const userType: IColumnTypeUser[] = [
   {
     name: 'idUser',
     resolve: types.number,
@@ -14,4 +27,3 @@ const columns: IColumnType[] = [
     resolve: types.string,
   },
 ];
-export default columns;

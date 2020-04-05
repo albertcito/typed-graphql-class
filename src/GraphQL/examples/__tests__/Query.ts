@@ -3,12 +3,13 @@ import {
   types,
 } from '../../';
 import { langsQuery, translationQuery } from '../queries';
-import { userType } from '../types';
+import { TTranslationKeys, userType } from '../types';
+import { TLangKeys } from '../types/Lang';
 
 describe('GraphQL-Type-Query', () => {
 
   it('render GraphQL - basic', () => {
-    const columns = [
+    const columns: TLangKeys[] = [
       'idLang',
       'name',
       'localName',
@@ -29,16 +30,17 @@ describe('GraphQL-Type-Query', () => {
   });
 
   it('render GraphQL - variable  in subqueries', () => {
-    const queryString = translationQuery.toString({
-      columns: [
-        'idTranslation',
+    const columns: TTranslationKeys[] = [
+      'idTranslation',
         {
           text: {
             columns: ['idText', 'text'],
             variables: ['idLang'],
           },
         },
-      ],
+    ];
+    const queryString = translationQuery.toString({
+      columns,
       variables: ['idTranslation'],
     });
     expect(queryString).toEqual('query translation($idLang:String,$idTranslation:Int){translation(idTranslation:$idTranslation){idTranslation text(idLang:$idLang){idText text}}}');
