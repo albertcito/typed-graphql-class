@@ -1,6 +1,6 @@
 {
   "name": "typed-graphql-class",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Query builder for GraphQL Queries/Mutations in TypeScript using classes.",
   "main": "dist/index.js",
   "types": "dist",
